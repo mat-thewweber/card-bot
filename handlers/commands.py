@@ -1,6 +1,7 @@
 from aiogram import Router, types
 from aiogram.filters import Command
 
+from repo import add_user
 from keyboards import back_kb, contacts_kb, main_menu_kb
 from texts import (
     ABOUT_TEXT,
@@ -15,8 +16,10 @@ router = Router()
 
 @router.message(Command("start"))
 async def cmd_start(message: types.Message):
+    user = message.from_user
+    await add_user(user.id, user.username, user.full_name)
     await message.answer(
-        f"Hello, {message.from_user.full_name}!\n{MENU_TEXT}",
+        f"Hello, {user.full_name}!\n{MENU_TEXT}",
         reply_markup=main_menu_kb(),
     )
 
