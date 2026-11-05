@@ -17,6 +17,7 @@ class User(Base):
     tg_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     username: Mapped[str | None]
     full_name: Mapped[str]
+    lang: Mapped[str] = mapped_column(String(2), server_default="en")
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
 class Project(Base):

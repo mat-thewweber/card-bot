@@ -49,3 +49,17 @@ async def delete_project(project_id: int) -> bool:
         await session.delete(project)
         await session.commit()
         return True
+
+async def get_lang(tg_id: int) -> str:
+    async with async_session() as session:
+        result = await session.execute(select(User.lang).where(User.tg_id == tg_id))
+        return result.scalar_one_or_none() or "en"
+
+
+async def set_lang(tg_id: int, lang: str):
+    async with async_session() as session:
+        result = await session.execute(select(User).where(User.tg_id == tg_id))
+        user = result.scalar_one_or_none()
+        if user is not None:
+            user.lang = lang
+            await session.commit()
