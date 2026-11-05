@@ -35,3 +35,6 @@ HELP_TEXT = (
 UNKNOWN_TEXT = "I don't understand. Press /start or /menu."
 
 FEEDBACK_ASK = "Write your message and I will pass it to Matthew. Text only."
+
+FEEDBACK_SENT = "Thanks! Your message was sent. I will reply here in the bot."
+FEEDBACK_TEXT_ONLY = "Please send text only, or press Cancel."
