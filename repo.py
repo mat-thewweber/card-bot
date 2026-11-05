@@ -1,6 +1,8 @@
 from sqlalchemy import select
 from database import Project, async_session
 from database import User, async_session
+from datetime import datetime, timedelta, timezone
+from sqlalchemy import func, select
 
 async def get_projects() -> list[Project]:
     async with async_session() as session:
@@ -23,3 +25,18 @@ async def add_user(tg_id: int, username: str | None, full_name: str) -> bool:
         session.add(User(tg_id=tg_id, username=username, full_name=full_name))
         await session.commit()
         return True
+    
+async def get_stats() -> dict:
+    week_ago = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=7)
+    async with async_session() as session:
+        total = (await session.execute(select(func.count(User.id)))).scalar_one()
+        week = (
+            await session.execute(
+                select(func.count(User.id)).where(User.created_at >= week_ago)
+            )
+        ).scalar_one()
+        projects = (await session.execute(select(func.count(Project.id)))).scalar_one()
+        last = (
+            await session.execute(select(User).order_by(User.id.desc()).limit(5))
+        ).scalars().all()
+    return {"total": total, "week": week, "projects": projects, "last": list(last)}
