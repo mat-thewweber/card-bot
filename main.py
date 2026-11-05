@@ -8,6 +8,7 @@ from database import init_db
 
 from config import BOT_TOKEN
 from handlers import callbacks, commands
+from handlers import callbacks, commands, feedback
 
 async def set_commands(bot: Bot):
     await init_db()
@@ -27,8 +28,10 @@ async def main():
         token=BOT_TOKEN,
         default=DefaultBotProperties(parse_mode="HTML", link_preview_is_disabled=True),
     )
+    
     dp = Dispatcher()
     dp.include_router(callbacks.router)
+    dp.include_router(feedback.router)
     dp.include_router(commands.router)
 
     await set_commands(bot)

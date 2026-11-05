@@ -33,3 +33,5 @@ HELP_TEXT = (
 )
 
 UNKNOWN_TEXT = "I don't understand. Press /start or /menu."
+
+FEEDBACK_ASK = "Write your message and I will pass it to Matthew. Text only."

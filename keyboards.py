@@ -6,7 +6,10 @@ def main_menu_kb():
             InlineKeyboardButton(text="👤 About me", callback_data="about"),
             InlineKeyboardButton(text="💻 Projects", callback_data="projects"),
         ],
-        [InlineKeyboardButton(text="📬 Contacts", callback_data="contacts")],
+        [
+            InlineKeyboardButton(text="📬 Contacts", callback_data="contacts"),
+            InlineKeyboardButton(text="✍️ Write me", callback_data="feedback"),
+        ],
     ])
 
 def back_kb():
@@ -20,4 +23,9 @@ def contacts_kb():
         [InlineKeyboardButton(text="🧵 Threads", url="https://www.threads.net/@mat.thewweber")],
         [InlineKeyboardButton(text="💻 GitHub", url="https://github.com/your_github")],
         [InlineKeyboardButton(text="⬅️ Back", callback_data="menu")],
+    ])
+    
+def cancel_kb():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✖️ Cancel", callback_data="cancel")],
     ])
