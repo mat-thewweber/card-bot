@@ -21,7 +21,12 @@ async def set_commands(bot: Bot):
     ]
     await bot.set_my_commands(user_commands)
     await bot.set_my_commands(
-        user_commands + [BotCommand(command="stats", description="Statistics")],
+        user_commands
+        + [
+            BotCommand(command="stats", description="Statistics"),
+            BotCommand(command="add_project", description="Add a project"),
+            BotCommand(command="cancel", description="Cancel dialog"),
+        ],
         scope=BotCommandScopeChat(chat_id=ADMIN_ID),
     )
 
