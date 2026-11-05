@@ -6,11 +6,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from config import ADMIN_ID
-from repo import add_project, get_stats
+from repo import add_project, delete_project, get_projects, get_stats
 
 router = Router()
 router.message.filter(F.from_user.id == ADMIN_ID)
-
+router.callback_query.filter(F.from_user.id == ADMIN_ID)
 
 @router.message(Command("stats"))
 async def cmd_stats(message: types.Message):
@@ -75,3 +75,34 @@ async def get_url(message: types.Message, state: FSMContext):
     await state.clear()
     await add_project(data["title"], data["description"], url)
     await message.answer("Project added. Check it in /projects")
+    
+def delete_kb(projects):
+    rows = [
+        [types.InlineKeyboardButton(text=f"🗑 {p.title[:40]}", callback_data=f"del_{p.id}")]
+        for p in projects
+    ]
+    return types.InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+@router.message(Command("del_project"))
+async def cmd_del_project(message: types.Message):
+    projects = await get_projects()
+    if not projects:
+        await message.answer("No projects to delete.")
+        return
+    await message.answer("Tap a project to delete it:", reply_markup=delete_kb(projects))
+
+
+@router.callback_query(F.data.startswith("del_"))
+async def cb_delete(call: types.CallbackQuery):
+    project_id = int(call.data.split("_")[1])
+    await delete_project(project_id)
+    projects = await get_projects()
+    if projects:
+        await call.message.edit_text(
+            "Deleted. Tap another project to delete it:",
+            reply_markup=delete_kb(projects),
+        )
+    else:
+        await call.message.edit_text("Deleted. No projects left.")
+    await call.answer("Deleted")

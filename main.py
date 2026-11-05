@@ -26,6 +26,7 @@ async def set_commands(bot: Bot):
             BotCommand(command="stats", description="Statistics"),
             BotCommand(command="add_project", description="Add a project"),
             BotCommand(command="cancel", description="Cancel dialog"),
+            BotCommand(command="delete_project", description="Delete a project"),
         ],
         scope=BotCommandScopeChat(chat_id=ADMIN_ID),
     )

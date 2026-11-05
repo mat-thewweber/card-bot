@@ -40,3 +40,12 @@ async def get_stats() -> dict:
             await session.execute(select(User).order_by(User.id.desc()).limit(5))
         ).scalars().all()
     return {"total": total, "week": week, "projects": projects, "last": list(last)}
+
+async def delete_project(project_id: int) -> bool:
+    async with async_session() as session:
+        project = await session.get(Project, project_id)
+        if project is None:
+            return False
+        await session.delete(project)
+        await session.commit()
+        return True
