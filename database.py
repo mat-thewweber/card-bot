@@ -4,7 +4,9 @@ from sqlalchemy import BigInteger, String, Text, func
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-engine = create_async_engine("sqlite+aiosqlite:///bot.db")
+from config import DB_PATH
+
+engine = create_async_engine(f"sqlite+aiosqlite:///{DB_PATH}")
 async_session = async_sessionmaker(engine, expire_on_commit=False)
 
 class Base(DeclarativeBase):
