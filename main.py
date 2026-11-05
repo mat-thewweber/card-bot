@@ -4,11 +4,13 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.types import BotCommand
+from database import init_db
 
 from config import BOT_TOKEN
 from handlers import callbacks, commands
 
 async def set_commands(bot: Bot):
+    await init_db()
     await bot.set_my_commands([
         BotCommand(command="start", description="Start the bot"),
         BotCommand(command="menu", description="Main menu"),
