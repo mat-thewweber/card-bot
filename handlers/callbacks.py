@@ -1,5 +1,6 @@
 from aiogram import F, Router, types
-
+from repo import get_projects
+from texts import format_projects
 from keyboards import back_kb, contacts_kb, main_menu_kb
 from texts import ABOUT_TEXT, CONTACTS_TEXT, MENU_TEXT, PROJECTS_TEXT
 
@@ -17,10 +18,12 @@ async def cb_about(call: types.CallbackQuery):
 
 @router.callback_query(F.data == "projects")
 async def cb_projects(call: types.CallbackQuery):
-    await call.message.edit_text(PROJECTS_TEXT, reply_markup=back_kb())
+    projects = await get_projects()
+    await call.message.edit_text(format_projects(projects), reply_markup=back_kb())
     await call.answer()
 
 @router.callback_query(F.data == "contacts")
 async def cb_contacts(call: types.CallbackQuery):
     await call.message.edit_text(CONTACTS_TEXT, reply_markup=contacts_kb())
     await call.answer()
+

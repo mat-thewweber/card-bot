@@ -1,6 +1,6 @@
 from aiogram import Router, types
 from aiogram.filters import Command
-
+from repo import get_projects, add_user
 from repo import add_user
 from keyboards import back_kb, contacts_kb, main_menu_kb
 from texts import (
@@ -10,6 +10,7 @@ from texts import (
     MENU_TEXT,
     PROJECTS_TEXT,
     UNKNOWN_TEXT,
+    format_projects,
 )
 
 router = Router()
@@ -37,7 +38,8 @@ async def cmd_about(message: types.Message):
 
 @router.message(Command("projects"))
 async def cmd_projects(message: types.Message):
-    await message.answer(PROJECTS_TEXT, reply_markup=back_kb())
+    projects = await get_projects()
+    await message.answer(format_projects(projects), reply_markup=back_kb())
 
 @router.message(Command("contacts"))
 async def cmd_contacts(message: types.Message):

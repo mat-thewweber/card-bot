@@ -1,3 +1,15 @@
+from html import escape
+
+def format_projects(projects):
+    if not projects:
+        return "<b>My projects</b>\nNo projects yet."
+    lines = ["<b>My projects</b>"]
+    for i,p in enumerate(projects, 1):
+        lines.append(f"\n{i}. <b>{escape(p.title)}</b>\n{escape(p.description)}")
+        if p.url:
+            lines.append(f"<a href='{escape(p.url)}'>Link</a>")
+    return "\n".join(lines)
+
 MENU_TEXT = "Choose a section:"
 
 ABOUT_TEXT = (
